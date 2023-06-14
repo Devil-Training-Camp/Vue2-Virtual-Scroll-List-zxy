@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
+import RecycleScroller from './plugins'
+
+Vue.use(RecycleScroller)
 
 Vue.config.productionTip = false
 
