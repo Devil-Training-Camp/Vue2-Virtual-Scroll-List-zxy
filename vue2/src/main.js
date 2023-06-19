@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
-import RecycleScroller from './plugins'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
-Vue.use(RecycleScroller)
-
+Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 new Vue({
