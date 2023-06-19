@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper" ref="wrapper" @scroll.passive="handleScroll">
-    <div class="scroll-bar"></div>
-    <div class="scroll-list">
+    <!-- <div class="scroll-bar" :style="`transform`"></div> -->
+    <div class="scroll-list" :style="blankFillStyle">
       <div v-for="item in visibleData" :key="item[itemKey]">
         <slot :item="item"></slot>
       </div>
@@ -10,7 +10,6 @@
 </template>
 
 <script>
-
 
 export default {
   data() {
@@ -31,14 +30,32 @@ export default {
   },
   computed: {
     endIndex() {
-      let endIndex = this.startIndex + this.maxCount
+      let endIndex = this.startIndex + this.maxCount + this.buffer
       if(!this.list[endIndex]) {
         endIndex = this.list.length
       }
       return endIndex
     },
     visibleData() {
-      return this.list.slice(this.startIndex, this.endIndex)
+      let startIndex = 0
+      if(this.startIndex <= this.maxCount) {
+        startIndex = 0
+      } else {
+        startIndex = this.startIndex - this.buffer
+      }
+      return this.list.slice(startIndex, this.endIndex)
+    },
+    blankFillStyle() {
+      let startIndex = 0
+      if(this.startIndex <= this.maxCount) {
+        startIndex = 0
+      } else {
+        startIndex = this.startIndex - this.buffer
+      }
+      return {
+        paddingTop: startIndex * this.rowHeight + 'px',
+        paddingBottom: (this.list.length - this.endIndex) * this.rowHeight + 'px'
+      }
     }
   },
   watch: {
@@ -51,7 +68,24 @@ export default {
       this.maxCount = Math.ceil(this.$refs.wrapper.clientHeight / this.rowHeight)
     },
     handleScroll() {
-
+      // 使用requestAnimationFrame请求动画帧实现节流效果
+      let requestAnimationFrame = window.requestAnimationFrame
+      let fps = 30
+      let interval = 1000 / fps
+      let then = Date.now()
+      requestAnimationFrame(() => {
+        let now = Date.now()
+        this.setDataStartIndex()
+        if(now - then >= interval) {
+          then = now
+          requestAnimationFrame(arguments.callee)
+        }
+      })
+    },
+    setDataStartIndex() { // 设置startIndex
+      const { scrollTop } = this.$refs.wrapper
+      this.currentScrollTop = scrollTop
+      this.startIndex = Math.floor(scrollTop / this.rowHeight)
     }
   }
 }
