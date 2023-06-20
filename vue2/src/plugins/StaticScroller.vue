@@ -1,7 +1,7 @@
 <template>
-  <div id="wrapper" ref="wrapper" @scroll.passive="handleScroll">
-    <!-- <div class="scroll-bar" :style="`transform`"></div> -->
-    <div class="scroll-list" :style="blankFillStyle">
+  <div id="wrapper" ref="wrapperRef" @scroll.passive="handleScroll">
+    <div class="scroll-bar" ref="scrollBarRef"></div>
+    <div class="scroll-list" :style="scrollListStyle">
       <div v-for="item in visibleData" :key="item[itemKey]">
         <slot :item="item"></slot>
       </div>
@@ -10,7 +10,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -36,36 +35,36 @@ export default {
       }
       return endIndex
     },
-    visibleData() {
+    startIndexCom() {
       let startIndex = 0
       if(this.startIndex <= this.maxCount) {
         startIndex = 0
       } else {
         startIndex = this.startIndex - this.buffer
       }
-      return this.list.slice(startIndex, this.endIndex)
+      return startIndex
     },
-    blankFillStyle() {
-      let startIndex = 0
-      if(this.startIndex <= this.maxCount) {
-        startIndex = 0
-      } else {
-        startIndex = this.startIndex - this.buffer
-      }
+    visibleData() {
+      return this.list.slice(this.startIndexCom, this.endIndex)
+    },
+    scrollListStyle() {
       return {
-        paddingTop: startIndex * this.rowHeight + 'px',
-        paddingBottom: (this.list.length - this.endIndex) * this.rowHeight + 'px'
+        transform: `translate3d(0, ${this.startIndexCom * this.rowHeight}px, 0)`
       }
     }
   },
   watch: {
     data: function(newVal) {
       this.list = Object.freeze(newVal)
+      this.setScrollBarHeight()
     }
   },
   methods: {
     calMaxCount() {
-      this.maxCount = Math.ceil(this.$refs.wrapper.clientHeight / this.rowHeight)
+      this.maxCount = Math.ceil(this.$refs.wrapperRef.clientHeight / this.rowHeight)
+    },
+    setScrollBarHeight() {
+      this.$refs.scrollBarRef.style.height = this.list.length * this.rowHeight + 'px'
     },
     handleScroll() {
       // 使用requestAnimationFrame请求动画帧实现节流效果
@@ -82,8 +81,8 @@ export default {
         }
       })
     },
-    setDataStartIndex() { // 设置startIndex
-      const { scrollTop } = this.$refs.wrapper
+    setDataStartIndex() {
+      const { scrollTop } = this.$refs.wrapperRef
       this.currentScrollTop = scrollTop
       this.startIndex = Math.floor(scrollTop / this.rowHeight)
     }
@@ -93,7 +92,14 @@ export default {
 
 <style scoped>
 #wrapper{
+  position: relative;
   height: 100%;
   overflow: auto;
+}
+.scroll-list{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 </style>

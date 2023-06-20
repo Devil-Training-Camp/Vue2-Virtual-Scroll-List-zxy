@@ -21,7 +21,7 @@ function genData(page, pageSize) {
     data.push({
       id: (page - 1) * pageSize + i + 1,
       username: faker.internet.userName(),
-      avatar: i % 3 === 0 ? 'https://img2.baidu.com/it/u=2046001661,4089174313&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1686934800&t=da782e303382c93a9f0d1340a0c6b78f' : ''
+      avatar: i % Math.ceil(Math.random() * 10) === 0 ? 'https://img2.baidu.com/it/u=2046001661,4089174313&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1686934800&t=da782e303382c93a9f0d1340a0c6b78f' : ''
     })
   }
   return data
