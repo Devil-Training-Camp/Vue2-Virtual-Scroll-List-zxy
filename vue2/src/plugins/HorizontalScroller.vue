@@ -16,7 +16,7 @@ export default {
       list: [],
       startIndex: 0,
       maxCount: 0,
-      currentScrollTop: 0
+      currentScrollLeft: 0
     }
   },
   props: {
@@ -30,7 +30,7 @@ export default {
   },
   activited() { // 路由切换定位列表滚动位置
     this.$nextTick(() => {
-      this.$refs.wrapperRef.scrollTop = this.currentScrollTop
+      this.$refs.wrapperRef.scrollLeft = this.currentScrollLeft
     })
   },
   computed: {
@@ -46,7 +46,7 @@ export default {
       if(this.startIndex <= this.maxCount) {
         startIndex = 0
       } else {
-        startIndex = this.startIndex - this.buffer
+        startIndex = this.startIndex - this.buffer < 0 ? 0 : this.startIndex - this.buffer
       }
       return startIndex
     },
@@ -55,7 +55,7 @@ export default {
     },
     scrollListStyle() {
       return {
-        transform: `translate3d(0, ${this.startIndexCom * this.rowHeight}px, 0)`
+        transform: `translate3d(${this.startIndexCom * this.rowHeight}px, 0, 0)`
       }
     }
   },
@@ -67,10 +67,10 @@ export default {
   },
   methods: {
     calMaxCount() {
-      this.maxCount = Math.ceil(this.$refs.wrapperRef.clientHeight / this.rowHeight)
+      this.maxCount = Math.ceil(this.$refs.wrapperRef.clientWidth / this.rowHeight)
     },
     setScrollBarHeight() {
-      this.$refs.scrollBarRef.style.height = this.list.length * this.rowHeight + 'px'
+      this.$refs.scrollBarRef.style.width = this.list.length * this.rowHeight + 'px'
     },
     handleScroll() {
       // 使用requestAnimationFrame请求动画帧实现节流效果
@@ -88,9 +88,11 @@ export default {
       })
     },
     setDataStartIndex() {
-      const { scrollTop } = this.$refs.wrapperRef
-      this.currentScrollTop = scrollTop
-      this.startIndex = Math.floor(scrollTop / this.rowHeight)
+      const { scrollLeft } = this.$refs.wrapperRef
+      console.log('scrollLeft', scrollLeft);
+      this.currentScrollLeft = scrollLeft
+      this.startIndex = Math.floor(scrollLeft / this.rowHeight)
+      console.log('startIndex', this.startIndex);
     }
   }
 }
@@ -100,10 +102,11 @@ export default {
 #wrapper{
   position: relative;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
 }
 .scroll-list{
   position: absolute;
+  display: flex;
   top: 0;
   left: 0;
   right: 0;

@@ -14,9 +14,10 @@ export default {
   data() {
     return {
       list: [],
+      positions: [],
       startIndex: 0,
       maxCount: 0,
-      positions: []
+      currentScrollTop: 0
     }
   },
   props: {
@@ -48,6 +49,11 @@ export default {
         }
       })
       this.$refs.scrollBarRef.style.height = this.positions[this.positions.length - 1].bottom + 'px'
+    })
+  },
+  activited() {
+    this.$nextTick(() => {
+      this.$refs.wrapperRef.scrollTop = this.currentScrollTop
     })
   },
   computed: {
