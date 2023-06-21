@@ -21,7 +21,11 @@
           <HorizontalScrollerPage />
         </div>
       </el-tab-pane>
-      <el-tab-pane label="横纵向滚动" name="fifth">定时任务补偿</el-tab-pane>
+      <el-tab-pane label="横纵向滚动" name="horizontalAndVertical">
+        <div class="horizontal-vertical-wrapper" v-if="activeName === 'horizontalAndVertical'">
+          <HorizontalAndVerticalScroller />
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -31,19 +35,21 @@ import StaticScrollerPage from './pages/StaticScrollerPage/index.vue'
 import DynamicScrollerPage from './pages/DynamicScrollerPage/index.vue'
 import PageScrollerPage from './pages/PageScrollerPage/index.vue'
 import HorizontalScrollerPage from './pages/HorizontalScrollerPage/index.vue'
+import HorizontalAndVerticalScroller from './plugins/HorizontalAndVerticalScroller.vue'
 
 export default {
   name: 'App',
   data() {
     return {
-      activeName: 'horizontal'
+      activeName: 'horizontalAndVertical'
     }
   },
   components: {
     StaticScrollerPage,
     DynamicScrollerPage,
     PageScrollerPage,
-    HorizontalScrollerPage
+    HorizontalScrollerPage,
+    HorizontalAndVerticalScroller
   }
 }
 </script>

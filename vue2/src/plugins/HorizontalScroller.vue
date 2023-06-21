@@ -89,10 +89,8 @@ export default {
     },
     setDataStartIndex() {
       const { scrollLeft } = this.$refs.wrapperRef
-      console.log('scrollLeft', scrollLeft);
       this.currentScrollLeft = scrollLeft
       this.startIndex = Math.floor(scrollLeft / this.rowHeight)
-      console.log('startIndex', this.startIndex);
     }
   }
 }
