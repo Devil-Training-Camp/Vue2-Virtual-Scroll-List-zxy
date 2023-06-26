@@ -1,4 +1,5 @@
 <template>
+  <!--定高 -->
   <div id="wrapper" ref="wrapperRef" @scroll.passive="handleScroll">
     <div class="scroll-bar" ref="scrollBarRef"></div>
     <div class="scroll-list" :style="scrollListStyle">
@@ -28,7 +29,7 @@ export default {
   mounted() {
     this.calMaxCount()
   },
-  activited() { // 路由切换定位列表滚动位置
+  activited() {
     this.$nextTick(() => {
       this.$refs.wrapperRef.scrollTop = this.currentScrollTop
     })

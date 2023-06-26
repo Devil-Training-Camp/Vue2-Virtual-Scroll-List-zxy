@@ -1,4 +1,5 @@
 <template>
+  <!-- 下拉加载 -->
   <div id="wrapper" ref="wrapperRef" @scroll.passive="handleScroll">
     <div :style="blankFillStyle">
       <div v-for="(item, index) in visibleData" :key="index">

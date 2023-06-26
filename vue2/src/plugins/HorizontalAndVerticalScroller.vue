@@ -1,4 +1,5 @@
 <template>
+  <!-- 双向滚动 -->
   <div id="wrapper" ref="wrapperRef" @scroll.passive="handleScroll">
     <div class="scroll-bar" ref="scrollBarRef"></div>
     <div class="scroll-list" :style="colScrollListStyle">
