@@ -92,6 +92,7 @@ export default {
   methods: {
     calMaxCount() {
       this.maxCount = Math.ceil(this.$refs.wrapperRef.clientHeight / this.rowHeight)
+      console.log('maxCount', this.maxCount);
     },
     cacheItemPos() {
       let rowHeight = this.rowHeight

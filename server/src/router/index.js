@@ -12,7 +12,7 @@ router.get('/list', async (ctx, next) => {
   })
   ctx.body = genData(delParam.page, delParam.pageSize)
 })
-const rows = [30, 40, 50, 60]
+const rows = [100, 120, 150]
 const rowHeights = [50, 60, 80]
 router.get('/lists', async (ctx, next) => {
   ctx.body = genLists()
